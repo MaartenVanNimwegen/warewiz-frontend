@@ -1,0 +1,17 @@
+:root {
+  --black: #4c4c4c;
+  --blue: #2888ff;
+  --white: #e3e3e3;
+  --super-white: #f5f5f5;
+  --gray: #949494;
+}
+
+body {
+  font-family: "Ebrima" !important;
+  background-color: var(--white) !important;
+}
+
+.btn {
+    background-color: var(--blue) !important;
+    color: var(--super-white) !important;
+}

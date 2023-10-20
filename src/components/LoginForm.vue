@@ -1,66 +1,85 @@
 <template>
-  <div class="container login-container">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="text-center">Login</h3>
-      </div>
+  <div class="container">
+    <div class="card shadow p-3 m-5 rounded-4 align-middle">
       <div class="card-body">
-        <form @submit.prevent="login">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input
-              type="text"
-              class="form-control"
-              id="username"
-              placeholder="Enter your username"
-              v-model="username"
-              required
-            />
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h1>Welcome to WareWiz</h1>
+            <div v-if="hasError" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+            <form @submit.prevent="login">
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailAddress"
+                  placeholder="Enter your email address"
+                  v-model="emailAddress"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Enter your password"
+                  v-model="password"
+                  required
+                />
+              </div>
+              <br />
+              <button type="submit" class="btn btn-primary btn-block">
+                Login
+              </button>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Enter your password"
-              v-model="password"
-              required
-            />
+          <div
+            class="col-12 col-md-6 mt-3 mt-md-0 d-flex align-items-center justify-content-center"
+          >
+            <img class="img-fluid" src="../assets/LogoSlogan.png" />
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
+import { auth } from "../services/api.js";
+
 export default {
   data() {
     return {
-      username: "",
+      emailAddress: "",
       password: "",
+      hasError: false,
+      errorMessage: "",
     };
   },
   methods: {
-    login() {
-      // Handle login logic here
-      console.log("Logging in with:", this.username, this.password);
-      // You can make an API call or perform any authentication logic here
+    async login() {
+      this.hasError = false;
+
+      try {
+        const response = await auth(this.emailAddress, this.password);
+
+        if (response.status === 200) {
+          const token = response.data.token;
+          localStorage.setItem("jwtToken", token);
+          console.log("Login successful:", response.data);
+        }
+      } catch (error) {
+        this.hasError = true;
+        this.errorMessage = "Invalid email or password.";
+      }
     },
   },
 };
 </script>
-  
-<style scoped>
-body {
-  background-color: #f8f9fa;
-}
 
-.login-container {
-  max-width: 400px;
-  margin: 0 auto;
-  margin-top: 100px;
-}
+<style scoped>
 </style>

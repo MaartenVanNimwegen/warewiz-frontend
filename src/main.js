@@ -16,4 +16,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = localStorage.getItem('user');
+  
+    if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+      next('/login');
+    } else if (to.path === '/login' && isAuthenticated) {
+      next('/');
+    } else {
+      next();
+    }
+  });
+  
 createApp(App).use(router).mount("#app");

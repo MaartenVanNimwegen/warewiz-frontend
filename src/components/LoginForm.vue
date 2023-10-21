@@ -68,8 +68,17 @@ export default {
         const response = await auth(this.emailAddress, this.password);
 
         if (response.status === 200) {
-          const token = response.data;
-          localStorage.setItem("jwtToken", token);
+          const user = {
+            id: response.data.id,
+            name: response.data.name,
+            emailAddress: response.data.emailAddress,
+            phone: response.data.phone,
+            jwtToken: response.data.jwtToken,
+            createdDate: response.data.createdDate,
+            lastModifiedDate: response.data.lastModifiedDate,
+          };
+          localStorage.setItem("user", JSON.stringify(user));
+          this.$router.push('/');
         }
       } catch (error) {
         this.hasError = true;

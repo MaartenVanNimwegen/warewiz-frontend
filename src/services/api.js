@@ -20,8 +20,8 @@ export const auth = (emailAddress, password) => {
   return axios.post("/v1/Auth", requestData);
 };
 
-// Get all locations
-export const getLocations = () => {
+// Get all Items by warehouse id
+export const getAllItemsByWarehouseId = (warehouseId) => {
   const token = getToken();
 
   if (token) {
@@ -30,8 +30,9 @@ export const getLocations = () => {
         Authorization: `Bearer ${token}`,
       },
     };
-    return api.get("/v1/Location", config);
+    return api.get(`/v1/Item/warehouse/${warehouseId}`, config);
   } else {
-    // TODO Redirect to login
+    console.error("Token not available. Redirecting to login...");
+    this.$router.push("/login");
   }
 };

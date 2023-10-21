@@ -23,9 +23,10 @@
           <li class="nav-item">
             <a class="nav-link active" href="/add-item">Add Item</a>
           </li>
+          <!-- TODO
           <li class="nav-item">
             <a class="nav-link active" href="/add-warehouse">Add Warehouse</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -39,6 +40,8 @@ export default {
 };
 </script>
   
-  <style scoped>
-/* Add your component-specific styles here */
+<style scoped>
+.navbar {
+  background-color: #e3e3e3 !important;
+}
 </style>

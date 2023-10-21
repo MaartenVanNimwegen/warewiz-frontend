@@ -92,6 +92,8 @@ export default {
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("jwtToken", response.data.jwtToken);
           localStorage.setItem("isAuthenticated", true);
+          localStorage.setItem("locationId", 8);
+          localStorage.setItem("warehouseId", 7);
           this.$router.push("/");
         }
       } catch (error) {

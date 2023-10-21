@@ -17,7 +17,7 @@
         <form @submit.prevent="login">
           <div class="input-group form-group">
             <label for="email">
-              <i class="bi bi-envelope"></i>
+              <i class="bi bi-at"></i>
             </label>
             <input
               type="email"

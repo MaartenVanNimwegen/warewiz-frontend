@@ -1,49 +1,53 @@
 <template>
   <div class="container">
-    <div class="card shadow p-3 m-5 rounded-4 align-middle">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <h1>Welcome to WareWiz</h1>
-            <div v-if="hasError" class="alert alert-danger" role="alert">
-              {{ errorMessage }}
-            </div>
-            <form @submit.prevent="login">
-              <div class="form-group">
-                <label for="username">Username:</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="emailAddress"
-                  placeholder="Enter your email address"
-                  v-model="emailAddress"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="password">Password:</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Enter your password"
-                  v-model="password"
-                  required
-                />
-              </div>
-              <br />
-              <button type="submit" class="btn btn-primary btn-block">
-                Login
-              </button>
-            </form>
-          </div>
-          <div
-            class="col-12 col-md-6 mt-3 mt-md-0 d-flex align-items-center justify-content-center"
-          >
-            <img class="img-fluid" src="../assets/LogoSlogan.png" />
-          </div>
-        </div>
+    <div class="row mt-5">
+      <div class="col-md-4"></div>
+      <div class="col-md-4 d-flex align-items-center justify-content-center">
+        <img class="img-fluid" src="../assets/LogoSlogan.png" />
       </div>
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h1 class="text-center">Sign in</h1>
+        <div v-if="hasError" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+        <form @submit.prevent="login">
+          <div class="input-group form-group">
+            <label for="email">
+              <i class="bi bi-envelope"></i>
+            </label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              v-model="emailAddress"
+              placeholder="Your Email"
+              required
+            />
+          </div>
+          <div class="input-group form-group">
+            <label for="password">
+              <i class="bi bi-lock"></i>
+            </label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              v-model="password"
+              placeholder="Password"
+              required
+            />
+            <i class="bi bi-eye" @click="togglePasswordVisibility"></i>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            Login
+          </button>
+        </form>
+      </div>
+      <div class="col-md-4"></div>
     </div>
   </div>
 </template>
@@ -73,16 +77,27 @@ export default {
             name: response.data.name,
             emailAddress: response.data.emailAddress,
             phone: response.data.phone,
-            jwtToken: response.data.jwtToken,
             createdDate: response.data.createdDate,
             lastModifiedDate: response.data.lastModifiedDate,
           };
           localStorage.setItem("user", JSON.stringify(user));
-          this.$router.push('/');
+          localStorage.setItem("jwtToken", response.data.jwtToken);
+          localStorage.setItem("isAuthenticated", true);
+          this.$router.push("/");
         }
       } catch (error) {
         this.hasError = true;
         this.errorMessage = "Invalid email or password.";
+      }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+      const passwordInput = document.getElementById("password");
+
+      if (this.showPassword) {
+        passwordInput.type = "text";
+      } else {
+        passwordInput.type = "password";
       }
     },
   },
@@ -90,4 +105,29 @@ export default {
 </script>
 
 <style scoped>
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  position: absolute;
+  left: 30px;
+  z-index: 6;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #555;
+}
+.input-group input {
+  padding-left: 30px;
+}
+
+.input-group i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
 </style>

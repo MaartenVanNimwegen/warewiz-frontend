@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm.vue";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -18,7 +19,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const isAuthenticated = localStorage.getItem('user');
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
   
     if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
       next('/login');

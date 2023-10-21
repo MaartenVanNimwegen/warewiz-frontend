@@ -68,9 +68,8 @@ export default {
         const response = await auth(this.emailAddress, this.password);
 
         if (response.status === 200) {
-          const token = response.data.token;
+          const token = response.data;
           localStorage.setItem("jwtToken", token);
-          console.log("Login successful:", response.data);
         }
       } catch (error) {
         this.hasError = true;

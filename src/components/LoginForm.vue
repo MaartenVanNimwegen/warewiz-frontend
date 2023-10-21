@@ -10,7 +10,7 @@
     <div class="row mt-5">
       <div class="col-md-4"></div>
       <div class="col-md-4">
-        <h1 class="text-center">Sign in</h1>
+        <h1 class="text-center mb-3">Sign in</h1>
         <div v-if="hasError" class="alert alert-danger" role="alert">
           {{ errorMessage }}
         </div>
@@ -42,10 +42,19 @@
             />
             <i class="bi bi-eye" @click="togglePasswordVisibility"></i>
           </div>
-          <button type="submit" class="btn btn-primary w-100">
-            Login
-          </button>
+          <!-- TODO
+          <p class="text-end">
+            <a class="text-decoration-none text-dark" href="/password-reset"
+              >Forgot password?
+            </a>
+          </p> -->
+          <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
+        <!-- TODO 
+        <p class="mt-2">
+          New to WareWiz?
+          <a href="/register">Register</a>
+        </p> -->
       </div>
       <div class="col-md-4"></div>
     </div>

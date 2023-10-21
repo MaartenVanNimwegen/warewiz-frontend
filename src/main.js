@@ -1,14 +1,16 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import WareWiz from "./components/WareWiz.vue";
 import LoginForm from "./components/LoginForm.vue";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  { path: "/", component: App, meta: { requiresAuth: true } },
+  { path: "/", component: WareWiz, meta: { requiresAuth: true } },
   { path: "/login", component: LoginForm },
   // Add other routes as needed
 ];

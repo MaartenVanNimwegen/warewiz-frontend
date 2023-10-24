@@ -7,6 +7,11 @@ const getToken = () => {
   return localStorage.getItem("jwtToken");
 };
 
+const unauthorized = () => {
+  localStorage.clear();
+  this.$router.push("/login");
+};
+
 const api = axios.create({
   baseURL,
 });
@@ -32,7 +37,7 @@ export const getAllItemsByWarehouseId = (warehouseId) => {
     };
     return api.get(`/v1/Item/warehouse/${warehouseId}`, config);
   } else {
+    unauthorized();
     console.error("Token not available. Redirecting to login...");
-    this.$router.push("/login");
   }
 };

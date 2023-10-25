@@ -80,6 +80,7 @@
                 >
                   Borrow
                 </button>
+                <BorrowModal ref="borrowModal" />
               </div>
             </div>
           </div>
@@ -92,11 +93,13 @@
 <script>
 import NavBar from "./NavBar.vue";
 import { getAllItemsByWarehouseId } from "../services/api.js";
+import BorrowModal from "./BorrowModal.vue";
 
 export default {
   name: "App",
   components: {
     NavBar,
+    BorrowModal,
   },
   data() {
     return {
@@ -129,6 +132,7 @@ export default {
       return `uploads/${photoLocation}`;
     },
     borrowItem(id) {
+      this.$refs.borrowModal.openModal();
       console.log(`Item with id: ${id} is borrowed`);
     },
   },

@@ -7,9 +7,8 @@ const getToken = () => {
   return localStorage.getItem("jwtToken");
 };
 
-const unauthorized = () => {
+const clearStorage = () => {
   localStorage.clear();
-  this.$router.push("/login");
 };
 
 const api = axios.create({
@@ -26,7 +25,7 @@ export const auth = (emailAddress, password) => {
 };
 
 // Get all Items by warehouse id
-export const getAllItemsByWarehouseId = (warehouseId) => {
+export const getAllItemsByWarehouseId = async (warehouseId) => {
   const token = getToken();
 
   if (token) {
@@ -35,9 +34,28 @@ export const getAllItemsByWarehouseId = (warehouseId) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    return api.get(`/v1/Item/warehouse/${warehouseId}`, config);
+
+    try {
+      const response = await api.get(
+        `/v1/Item/warehouse/${warehouseId}`,
+        config
+      );
+
+      if (response.status === 200) {
+        return response;
+      } else {
+        console.error("Unexpected status code:", response.status);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        clearStorage();
+        console.error("Unauthorized. Redirecting to login...");
+        return false;
+      }
+    }
   } else {
-    unauthorized();
+    clearStorage();
     console.error("Token not available. Redirecting to login...");
+    return false;
   }
 };

@@ -74,7 +74,12 @@
                       : "No serial number found")
                   }}
                 </p>
-                <button v-if="selectedItem" @click="borrowItem(selectedItem.id)">Borrow</button>
+                <button
+                  v-if="selectedItem"
+                  @click="borrowItem(selectedItem.id)"
+                >
+                  Borrow
+                </button>
               </div>
             </div>
           </div>
@@ -105,12 +110,16 @@ export default {
   methods: {
     async fetchItems() {
       try {
-        const result = await getAllItemsByWarehouseId(
-          localStorage.getItem("warehouseId")
-        );
+        const result = await getAllItemsByWarehouseId(localStorage.getItem("warehouseId"));
+        if (result === false) {
+          this.$router.push("/login");
+        }
         this.items = result.data;
+        if (this.items.length > 0) {
+          this.selectItem(this.items[0]);
+        }
       } catch (error) {
-        console.error("Error calling API function:", error);
+        this.$router.push("/login");
       }
     },
     selectItem(item) {

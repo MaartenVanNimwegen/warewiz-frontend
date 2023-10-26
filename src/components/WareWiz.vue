@@ -3,7 +3,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 mt-2">
-        <div class="card">
+        <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
           <div class="card-body">
             <form @submit.prevent="searchItem">
               <div class="input-group">
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="col-md-4 mt-2">
-        <div class="card">
+        <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
           <div class="card-body">
             <div class="row">
               <div class="col-12">
@@ -77,6 +77,7 @@
                 <button
                   v-if="selectedItem"
                   @click="borrowItem(selectedItem.id)"
+                  class="btn btn-primary"
                 >
                   Borrow
                 </button>
@@ -132,7 +133,7 @@ export default {
       return `uploads/${photoLocation}`;
     },
     borrowItem(id) {
-      this.$refs.borrowModal.openModal();
+      this.$refs.borrowModal.openModal(this.selectedItem.id);
       console.log(`Item with id: ${id} is borrowed`);
     },
   },

@@ -3,21 +3,22 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 mt-2">
+        <!-- TODO: Search system -->
+        <!-- <form @submit.prevent="searchItem">
+          <div class="input-group">
+            <label for="searchItem">
+              <i class="bi bi-search"></i>
+            </label>
+            <input
+            type="text"
+            class="form-control"
+            id="searchItem"
+            v-model="searchItem"
+            />
+          </div>
+        </form> -->
         <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
           <div class="card-body">
-            <form @submit.prevent="searchItem">
-              <div class="input-group">
-                <label for="searchItem">
-                  <i class="bi bi-search"></i>
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="searchItem"
-                  v-model="searchItem"
-                />
-              </div>
-            </form>
             <table class="table table-striped">
               <thead class="table-light">
                 <tr>
@@ -74,14 +75,26 @@
                       : "No serial number found")
                   }}
                 </p>
+                <p v-if="selectedItem">
+                  {{
+                    selectedItem.status == 1
+                      ? "Status: Borrowed"
+                      : "Status: Available"
+                  }}
+                </p>
                 <button
                   v-if="selectedItem"
-                  @click="borrowItem(selectedItem.id)"
+                  @click="
+                    selectedItem.status === 1
+                      ? returnItem(selectedItem.id)
+                      : borrowItem(selectedItem.id)
+                  "
                   class="btn btn-primary"
                 >
-                  Borrow
+                  {{ selectedItem.status === 1 ? "Return" : "Borrow" }}
                 </button>
                 <BorrowModal ref="borrowModal" />
+                <ReturnModal ref="returnModal" />
               </div>
             </div>
           </div>
@@ -95,12 +108,14 @@
 import NavBar from "./NavBar.vue";
 import { getAllItemsByWarehouseId } from "../services/api.js";
 import BorrowModal from "./BorrowModal.vue";
+import ReturnModal from "./ReturnModal.vue";
 
 export default {
   name: "App",
   components: {
     NavBar,
     BorrowModal,
+    ReturnModal,
   },
   data() {
     return {
@@ -114,7 +129,9 @@ export default {
   methods: {
     async fetchItems() {
       try {
-        const result = await getAllItemsByWarehouseId(localStorage.getItem("warehouseId"));
+        const result = await getAllItemsByWarehouseId(
+          localStorage.getItem("warehouseId")
+        );
         if (result === false) {
           this.$router.push("/login");
         }
@@ -132,9 +149,11 @@ export default {
     getPhotoLocation(photoLocation) {
       return `uploads/${photoLocation}`;
     },
-    borrowItem(id) {
+    borrowItem() {
       this.$refs.borrowModal.openModal(this.selectedItem.id);
-      console.log(`Item with id: ${id} is borrowed`);
+    },
+    returnItem() {
+      this.$refs.returnModal.openModal(this.selectedItem.id);
     },
   },
 };

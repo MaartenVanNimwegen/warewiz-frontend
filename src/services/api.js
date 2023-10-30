@@ -70,7 +70,7 @@ export const borrowItem = async (itemId, borrower) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    
+
     const body = {
       name: borrower.borrowerName,
       emailAddress: borrower.borrowerEmail,
@@ -79,7 +79,7 @@ export const borrowItem = async (itemId, borrower) => {
       createdDate: new Date().toISOString(),
       lastModifiedDate: new Date().toISOString(),
     };
-    
+
     try {
       const response = await api.post(
         `/v1/Item/borrow?itemId=${itemId}&returnDate=${borrower.borrowerReturnDate}`,
@@ -90,20 +90,53 @@ export const borrowItem = async (itemId, borrower) => {
       if (response.status === 200) {
         return response.data;
       } else {
-        console.error('Unexpected status code:', response.status);
+        console.error("Unexpected status code:", response.status);
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         clearStorage();
-        console.error('Unauthorized. Redirecting to login...');
+        console.error("Unauthorized. Redirecting to login...");
         return false;
       } else {
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   } else {
     clearStorage();
-    console.error('Token not available. Redirecting to login...');
+    console.error("Token not available. Redirecting to login...");
+    return false;
+  }
+};
+
+// Function to return an item
+export const returnItem = async (itemId) => {
+  const token = getToken();
+
+  if (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await api.post(`/v1/Item/return/${itemId}`, config);
+
+      if (response.status === 200) {
+        return response;
+      } else {
+        console.error("Unexpected status code:", response.status);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        clearStorage();
+        console.error("Unauthorized. Redirecting to login...");
+        return false;
+      }
+    }
+  } else {
+    clearStorage();
+    console.error("Token not available. Redirecting to login...");
     return false;
   }
 };

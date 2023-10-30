@@ -22,10 +22,10 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="nav-link btn mx-2" href="/">Home</a>
+                    <a class="btn btn-primary mx-2" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn mx-2" href="/add-item">Add Item</a>
+                    <a class="btn btn-primary mx-2" href="/add-item">Add Item</a>
                   </li>
                   <!-- TODO
                   <li class="nav-item">

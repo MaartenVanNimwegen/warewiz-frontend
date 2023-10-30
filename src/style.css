@@ -10,8 +10,3 @@ body {
   font-family: "Ebrima" !important;
   background-color: var(--super-white) !important;
 }
-
-.btn {
-    background-color: var(--blue) !important;
-    color: var(--super-white) !important;
-}

@@ -142,3 +142,52 @@ export const returnItem = async (itemId) => {
     return false;
   }
 };
+
+// Function to add an item
+export const addItem = async (item) => {
+  const token = getToken();
+  if (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    console.log("test");
+    const body = {
+      name: item.name,
+      description: item.description,
+      serialNumber: item.serialNumber,
+      photoLocation: item.photoLocation,
+      warehouseId: localStorage.getItem("warehouseId"),
+      createdDate: new Date().toISOString(),
+      lastModifiedDate: new Date().toISOString(),
+      status: 0,
+    };
+    console.log(body);
+    
+    try {
+      const response = await api.post(`/v1/Item`, body, config);
+
+      if (response.status === 200) {
+        location.reload();
+        return true;
+      } else {
+        console.error("Unexpected status code:", response.status);
+        return false;
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        clearStorage();
+        console.error("Unauthorized. Redirecting to login...");
+        return false;
+      } else {
+        console.error("Error:", error.message);
+      }
+    }
+  } else {
+    clearStorage();
+    console.error("Token not available. Redirecting to login...");
+    return false;
+  }
+};

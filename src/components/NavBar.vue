@@ -22,10 +22,12 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                   <li class="nav-item">
-                    <a class="btn btn-primary mx-2" href="/">Home</a>
+                    <a class="nav-link" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="btn btn-primary mx-2" href="/add-item">Add Item</a>
+                    <button class="nav-link" @click="addItem()">
+                      Add Item
+                    </button>
                   </li>
                   <!-- TODO
                   <li class="nav-item">
@@ -39,11 +41,22 @@
       </div>
     </div>
   </div>
+  <AddItemModal ref="addItemModal" />
 </template>
   
   <script>
+import AddItemModal from "./AddItemModal.vue";
+
 export default {
   name: "NavBar",
+  components: {
+    AddItemModal,
+  },
+  methods: {
+    addItem() {
+      this.$refs.addItemModal.openModal();
+    },
+  },
 };
 </script>
   

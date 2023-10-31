@@ -88,9 +88,10 @@ export const borrowItem = async (itemId, borrower) => {
       );
 
       if (response.status === 200) {
-        return response.data;
+        return true;
       } else {
         console.error("Unexpected status code:", response.status);
+        return false;
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -111,21 +112,20 @@ export const borrowItem = async (itemId, borrower) => {
 // Function to return an item
 export const returnItem = async (itemId) => {
   const token = getToken();
-
   if (token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
     try {
-      const response = await api.post(`/v1/Item/return/${itemId}`, config);
+      const response = await api.get(`/v1/Item/return/${itemId}`, config);
 
       if (response.status === 200) {
-        return response;
+        return true;
       } else {
         console.error("Unexpected status code:", response.status);
+        return false;
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {

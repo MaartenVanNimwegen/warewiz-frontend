@@ -88,6 +88,7 @@ export const borrowItem = async (itemId, borrower) => {
       );
 
       if (response.status === 200) {
+        location.reload();
         return true;
       } else {
         console.error("Unexpected status code:", response.status);
@@ -122,6 +123,7 @@ export const returnItem = async (itemId) => {
       const response = await api.get(`/v1/Item/return/${itemId}`, config);
 
       if (response.status === 200) {
+        location.reload();
         return true;
       } else {
         console.error("Unexpected status code:", response.status);

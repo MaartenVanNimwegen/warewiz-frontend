@@ -153,7 +153,6 @@ export const addItem = async (item) => {
       },
     };
 
-    console.log("test");
     const body = {
       name: item.name,
       description: item.description,

@@ -164,7 +164,7 @@ export const addItem = async (item) => {
       status: 0,
     };
     console.log(body);
-    
+
     try {
       const response = await api.post(`/v1/Item`, body, config);
 
@@ -198,18 +198,51 @@ export const uploadImage = async (file) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     };
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
-      const response = await api.post('/v1/Photo/upload', formData, config);
+      const response = await api.post("/v1/Photo/upload", formData, config);
 
       if (response.status === 200) {
         return response.data.filePath;
+      } else {
+        console.error("Unexpected status code:", response.status);
+        return false;
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+      return false;
+    }
+  } else {
+    clearStorage();
+    console.error("Token not available. Redirecting to login...");
+    return false;
+  }
+};
+
+export const GetPhotoByPath = async (path) => {
+  const token = getToken();
+
+  if (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    try {
+      const response = await api.get(
+        "/v1/Photo/getByPath?filePath=" + path,
+        config
+      );
+      if (response.status === 200) {
+        return response;
       } else {
         console.error("Unexpected status code:", response.status);
         return false;

@@ -28,12 +28,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="item in items"
-                  :key="item.id"
-                  @click="selectItem(item)"
-                  :class="{ 'table-info': selectedItem === item }"
-                >
+                <tr v-for="item in items" :key="item.id" @click="selectItem(item)"
+                  :class="{ 'table-info': selectedItem === item }">
                   <td>{{ item.name }}</td>
                   <td>{{ item.description }}</td>
                   <td>{{ item.status === 0 ? "Available" : "Borrowed" }}</td>
@@ -52,11 +48,8 @@
                   {{ "Please select an item to see details" }}
                 </h4>
                 <div class="picture-container">
-                  <img
-                    v-if="selectedItem"
-                    :src="getPhotoLocation(selectedItem.photoLocation)"
-                    alt="itemPicture"
-                  />
+                  <img v-if="selectedItem" :src="getPhotoLocation(selectedItem.photoLocation)"
+                    alt="Oops! No image was found!" />
                 </div>
               </div>
             </div>
@@ -78,19 +71,15 @@
                 <p v-if="selectedItem">
                   {{
                     selectedItem.status == 1
-                      ? "Status: Borrowed"
-                      : "Status: Available"
+                    ? "Status: Borrowed"
+                    : "Status: Available"
                   }}
                 </p>
-                <button
-                  v-if="selectedItem"
-                  @click="
-                    selectedItem.status === 1
-                      ? returnItem(selectedItem.id)
-                      : borrowItem(selectedItem.id)
-                  "
-                  class="btn btn-primary"
-                >
+                <button v-if="selectedItem" @click="
+                  selectedItem.status === 1
+                    ? returnItem(selectedItem.id)
+                    : borrowItem(selectedItem.id)
+                  " class="btn btn-primary">
                   {{ selectedItem.status === 1 ? "Return" : "Borrow" }}
                 </button>
                 <BorrowModal ref="borrowModal" />
@@ -107,6 +96,7 @@
 <script>
 import NavBar from "./NavBar.vue";
 import { getAllItemsByWarehouseId } from "../services/api.js";
+import { GetPhotoByPath } from "../services/api.js";
 import BorrowModal from "./BorrowModal.vue";
 import ReturnModal from "./ReturnModal.vue";
 
@@ -146,8 +136,21 @@ export default {
     selectItem(item) {
       this.selectedItem = item;
     },
-    getPhotoLocation(photoLocation) {
-      return `uploads/${photoLocation}`;
+    async getPhotoLocation(photoLocation) {
+      try {
+        const response = await GetPhotoByPath(photoLocation);
+
+        if (response && response.status === 200) {
+          console.log(response);
+          return response.data;
+        } else {
+          console.error("Failed to retrieve image:", response);
+          return "path/to/default/image.jpg";
+        }
+      } catch (error) {
+        console.error("Error retrieving image:", error.message);
+        return "path/to/default/image.jpg";
+      }
     },
     borrowItem() {
       this.$refs.borrowModal.openModal(this.selectedItem.id);
@@ -181,6 +184,7 @@ export default {
   z-index: 200;
   transform: translateY(-50%);
 }
+
 .picture-container {
   border-radius: 10px;
   width: 100%;

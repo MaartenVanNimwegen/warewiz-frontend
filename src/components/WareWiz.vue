@@ -96,7 +96,6 @@
 <script>
 import NavBar from "./NavBar.vue";
 import { getAllItemsByWarehouseId } from "../services/api.js";
-import { GetPhotoByPath } from "../services/api.js";
 import BorrowModal from "./BorrowModal.vue";
 import ReturnModal from "./ReturnModal.vue";
 
@@ -137,20 +136,7 @@ export default {
       this.selectedItem = item;
     },
     async getPhotoLocation(photoLocation) {
-      try {
-        const response = await GetPhotoByPath(photoLocation);
-
-        if (response && response.status === 200) {
-          console.log(response);
-          return response.data;
-        } else {
-          console.error("Failed to retrieve image:", response);
-          return "path/to/default/image.jpg";
-        }
-      } catch (error) {
-        console.error("Error retrieving image:", error.message);
-        return "path/to/default/image.jpg";
-      }
+      return "http://localhost:8080/api/v1/Photo/getByPath?filePath=" + photoLocation;
     },
     borrowItem() {
       this.$refs.borrowModal.openModal(this.selectedItem.id);

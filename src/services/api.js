@@ -224,36 +224,3 @@ export const uploadImage = async (file) => {
     return false;
   }
 };
-
-export const GetPhotoByPath = async (path) => {
-  const token = getToken();
-
-  if (token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    try {
-      const response = await api.get(
-        "/v1/Photo/getByPath?filePath=" + path,
-        config
-      );
-      if (response.status === 200) {
-        return response;
-      } else {
-        console.error("Unexpected status code:", response.status);
-        return false;
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error.message);
-      return false;
-    }
-  } else {
-    clearStorage();
-    console.error("Token not available. Redirecting to login...");
-    return false;
-  }
-};

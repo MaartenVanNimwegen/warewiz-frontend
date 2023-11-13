@@ -24,6 +24,11 @@ export const auth = (emailAddress, password) => {
   return axios.post("/v1/Auth", requestData);
 };
 
+export const logout = () => {
+  clearStorage();
+  window.location.reload(true);
+};
+
 // Get all Items by warehouse id
 export const getAllItemsByWarehouseId = async (warehouseId) => {
   const token = getToken();

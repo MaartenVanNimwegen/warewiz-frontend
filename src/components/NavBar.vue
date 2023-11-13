@@ -29,6 +29,11 @@
                       Add Item
                     </button>
                   </li>
+                  <li class="nav-item">
+                    <button class="btn btn-danger" @click="logout()">
+                      Logout
+                    </button>
+                  </li>
                   <!-- TODO
                   <li class="nav-item">
                     <a class="nav-link active" href="/add-warehouse">Add Warehouse</a>
@@ -46,6 +51,7 @@
   
   <script>
 import AddItemModal from "./AddItemModal.vue";
+import { logout } from "../services/api.js";
 
 export default {
   name: "NavBar",
@@ -56,6 +62,9 @@ export default {
     addItem() {
       this.$refs.addItemModal.openModal();
     },
+    logout() {
+      logout();
+    }
   },
 };
 </script>
